@@ -118,7 +118,8 @@ class Parser:
 
 
 def main():
-    with open('/Users/yjpark/Documents/namuwiki190312/namuwiki_20190312.json', 'r') as f:
+    filename = open('location.txt').read().strip()
+    with open(filename, 'r') as f:
         line = 0
         parser = Parser()
         while True:

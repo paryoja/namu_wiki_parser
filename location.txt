@@ -1,0 +1,1 @@
+/data/wiki/namuwiki_20190312.json
