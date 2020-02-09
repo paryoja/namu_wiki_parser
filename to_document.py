@@ -5,44 +5,48 @@ import tqdm
 
 
 def parse_line(file):
-    with open(file) as f:
-        with open(file + '.text', 'w') as w:
-            for line in f:
-                temp = line.split('\t')
+    with open(file + '_title.txt', 'w', encoding='utf-8') as title_file:
+        with open(file, encoding='utf-8') as f:
+            with open(file + '.text', 'w', encoding='utf-8') as w:
+                for line in f:
+                    temp = line.split('\t')
 
-                parsed_title = temp[1].replace('\/', '/').encode().decode('unicode-escape'). \
-                    encode('utf-16', 'surrogatepass').decode('utf-16')
-
-                assert len(temp) == 4, "{} {} {}".format(len(temp), '\t'.join(temp[::2]), parsed_title)
-                assert temp[0] == 'title', temp[0]
-                assert temp[2] == 'text', temp[2]
-
-                try:
-                    parsed_text = temp[3].replace('\/', '/').encode().decode('unicode-escape'). \
+                    parsed_title = temp[1].replace('\/', '/').encode().decode('unicode-escape'). \
                         encode('utf-16', 'surrogatepass').decode('utf-16')
 
-                    while '\n\n' in parsed_text:
-                        parsed_text = parsed_text.replace('\n\n', '\n')
+                    assert len(temp) == 4, "{} {} {}".format(len(temp), '\t'.join(temp[::2]), parsed_title)
+                    assert temp[0] == 'title', temp[0]
+                    assert temp[2] == 'text', temp[2]
 
-                    w.write(parsed_title)
-                    w.write('\n')
-                    w.write(parsed_text)
-                    w.write('\n\n')
+                    try:
+                        parsed_text = temp[3].replace('\/', '/').encode().decode('unicode-escape'). \
+                            encode('utf-16', 'surrogatepass').decode('utf-16')
 
-                except Exception as e:
-                    print("Title ", parsed_title)
+                        while '\n\n' in parsed_text:
+                            parsed_text = parsed_text.replace('\n\n', '\n')
 
-                    for token in temp[3].split():
-                        print(token)
-                        print(token.replace('\/', '/').encode().decode('unicode-escape'). \
-                              encode('utf-16', 'surrogatepass').decode('utf-16'))
-                        print(token, token.encode().decode('unicode-escape'))
+                        w.write(parsed_title)
+                        w.write('\n')
+                        w.write(parsed_text)
+                        w.write('\n\n')
 
-                    raise e
+                        title_file.write(parsed_title)
+                        title_file.write('\n')
+
+                    except Exception as e:
+                        print("Title ", parsed_title)
+
+                        for token in temp[3].split():
+                            print(token)
+                            print(token.replace('\/', '/').encode().decode('unicode-escape'). \
+                                  encode('utf-16', 'surrogatepass').decode('utf-16'))
+                            print(token, token.encode().decode('unicode-escape'))
+
+                        raise e
 
 
 def main():
-    files = sorted(glob.glob("parsed_files/*.txt"))
+    files = sorted(glob.glob("parsed_files/*[0-9].txt"))
     pool = Pool(8)
     with tqdm.tqdm(total=len(files)) as pbar:
         for _ in tqdm.tqdm(pool.imap_unordered(parse_line, files)):
