@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  elasticsearch:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - /Users/yjpark/work/elasticsearch/data:/usr/share/elasticsearch/data
+    environment:
+      ES_JAVA_OPTS: "-Xmx2048m -Xms2048m"
+    ports:
+      - 9200:9200
+      - 9300:9300
