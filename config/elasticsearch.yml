@@ -1,3 +1,5 @@
 cluster.name: es_test
 node.name : namu-1
-
+network:
+  host: 0.0.0.0
+discovery.type: single-node

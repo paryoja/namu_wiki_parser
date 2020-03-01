@@ -1,0 +1,11 @@
+FROM kibana:7.6.0
+MAINTAINER Yoonjae Park <yj0604.park@gmail.com>
+
+COPY ./config/kibana.yml /usr/share/kibana/config/kibana.yml
+
+curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.6.0-darwin-x86_64.tar.gz
+tar xzvf filebeat-7.6.0-darwin-x86_64.tar.gz
+cd filebeat-7.6.0-darwin-x86_64/
+
+
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
