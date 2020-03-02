@@ -25,7 +25,8 @@ services:
     image:
       "logstash:7.6.0"
     volumes:
-      - ./config/logstash.conf:/usr/share/logstash/config/logstash.conf
+      - ./config/logstash_file.conf:/usr/share/logstash/config/logstash.conf
+      - /Volumes/github/namu_wiki_parser/document/:/data/
     ports:
       - 5000:5000
       - 9600:9600
