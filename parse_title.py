@@ -8,17 +8,17 @@ import tqdm
 
 base_dir = pathlib.Path('parsed_files/word_count')
 
-link_regex = re.compile(r"\[\[([^\|]+?)(\|(.+?))?\]\]")
-curly = re.compile(r"\{\{\{(.)+?\}\}\}")
+link_regex = re.compile(r"\[\[([^|]+?)(\|(.+?))?\]\]")
+curly = re.compile(r"{{{(.)+?\}\}\}")
 parenthesis = re.compile(r"\((.+?)\)")
 three_quotes = re.compile(r"'''(.+?)'''")
 single_quote = re.compile(r"'(.+?)'")
 strike = re.compile(r"~~(.+?)~~")
-to_space = re.compile(r'[\[\]*\\/·_\-\+×:]')
+to_space = re.compile(r'[\[\]*\\/·_\-+×:]')
 square_bracket_1 = re.compile(r'『(.+?)』')
 square_bracket_2 = re.compile(r'【(.+?)】')
 bracket = re.compile(r'\[(.+?)\]')
-delete_char = re.compile(r'[\.?!\'",]')
+delete_char = re.compile(r'[.?!\'",]')
 
 
 def split_word_parallel(file_path, verbose=False):
