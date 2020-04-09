@@ -1,2 +1,8 @@
-ijson==2.6.1
-tqdm==4.43.0
+ijson==3.0
+tqdm==4.45.0
+environs==7.3.1
+absl-py==0.9.0
+requests==2.23.0
+emoji==0.5.4
+beautifulSoup4==4.9.0
+selenium==3.141.0
