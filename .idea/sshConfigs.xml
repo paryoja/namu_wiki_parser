@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="SshConfigs">
-    <configs>
-      <sshConfig authType="PASSWORD" host="192.168.29.196" id="0278e1d3-c963-4f14-9487-bfb0c743395b" port="22" customName="mac" nameFormat="CUSTOM" username="yjpark" />
-      <sshConfig authType="PASSWORD" host="192.168.29.196" id="e7895361-c531-45e5-bb0a-de280466a461" port="22" customName="mac" nameFormat="CUSTOM" username="yjpark" />
-    </configs>
-  </component>
-</project>

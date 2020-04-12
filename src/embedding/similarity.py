@@ -123,9 +123,9 @@ def embed_text(text):
 
 if __name__ == "__main__":
     INDEX_NAME = "posts"
-    INDEX_FILE = "data/posts/index.json"
+    INDEX_FILE = "document/sample/index.json"
 
-    DATA_FILE = "data/posts/posts.json"
+    DATA_FILE = "document/sample/posts.json"
     BATCH_SIZE = 1000
 
     SEARCH_SIZE = 5
@@ -142,7 +142,7 @@ if __name__ == "__main__":
     session.run(tf.tables_initializer())
     print("Done.")
 
-    client = Elasticsearch()
+    client = Elasticsearch(hosts=[{"host": "192.168.29.196", "port": 9200}])
 
     index_data()
     run_query_loop()
