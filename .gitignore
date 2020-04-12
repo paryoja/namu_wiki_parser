@@ -1,3 +1,5 @@
 /parsed_files
 /location.txt
 /document
+*.DS_Store
+venv/

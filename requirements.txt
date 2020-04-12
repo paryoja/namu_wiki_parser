@@ -6,3 +6,6 @@ requests==2.23.0
 emoji==0.5.4
 beautifulSoup4==4.9.0
 selenium==3.141.0
+tensorflow==1.15
+tensorflow_hub
+elasticsearch==7.6.0

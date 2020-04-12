@@ -1,4 +1,5 @@
 import json
+from elasticsearch import Elasticsearch
 import pathlib
 import re
 
@@ -70,34 +71,64 @@ def text_parser(text):
     return text
 
 
+def to_file(document_path, filepath):
+    with open(str(filepath), encoding="utf-8") as f:
+        # with open(document_path / f'original_${filepath.name}.txt', 'w', encoding='utf-8') as orig:
+        #     with open(document_path / 'text.txt', 'w', encoding='utf-8') as w:
+        with open(
+            document_path / f"parsed_{filepath.name}.txt", "w", encoding="utf-8"
+        ) as parsed:
+            for doc in f:
+                data = json.loads(doc)
+
+                text = data["text"]
+                definite = definite_parser(text)
+
+                for line in definite.split("\n"):
+                    # orig.write(line)
+                    # orig.write('\n')
+                    # w.write(definite)
+                    # w.write('\n')
+                    cleaned_text = text_parser(line).strip()
+                    if cleaned_text:
+                        parsed.write(cleaned_text)
+                        parsed.write("\n")
+
+                # break
+                parsed.write("\n")
+
+
+def to_es(filepath):
+    es = Elasticsearch(hosts=[{"host": "192.168.29.196", "port": 9200}])
+    with open(str(filepath), encoding="utf-8") as f:
+        for doc in f:
+            data = json.loads(doc)
+
+            text = data["text"]
+            definite = definite_parser(text)
+
+            contents = []
+            for line in definite.split("\n"):
+                # orig.write(line)
+                # orig.write('\n')
+                # w.write(definite)
+                # w.write('\n')
+                cleaned_text = text_parser(line).strip()
+                if cleaned_text:
+                    contents.append(cleaned_text)
+
+            body = "\n".join(contents)
+            print(body)
+            document = {"title": data["title"], "text": body}
+            es.index(index="namu_wiki_analysis", body=document)
+
+
 def main():
-    document_path = pathlib.Path("document")
+    document_path = pathlib.Path("document/wiki")
 
     for filepath in document_path.glob("*.json"):
-        with open(str(filepath), encoding="utf-8") as f:
-            # with open(document_path / f'original_${filepath.name}.txt', 'w', encoding='utf-8') as orig:
-            #     with open(document_path / 'text.txt', 'w', encoding='utf-8') as w:
-            with open(
-                document_path / f"parsed_{filepath.name}.txt", "w", encoding="utf-8"
-            ) as parsed:
-                for doc in f:
-                    data = json.loads(doc)
-
-                    text = data["text"]
-                    definite = definite_parser(text)
-
-                    for line in definite.split("\n"):
-                        # orig.write(line)
-                        # orig.write('\n')
-                        # w.write(definite)
-                        # w.write('\n')
-                        cleaned_text = text_parser(line).strip()
-                        if cleaned_text:
-                            parsed.write(cleaned_text)
-                            parsed.write("\n")
-
-                    # break
-                    parsed.write("\n")
+        to_es(filepath)
+        # to_file(document_path, filepath)
 
 
 if __name__ == "__main__":

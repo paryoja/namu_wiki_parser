@@ -2,6 +2,7 @@ version: '3'
 
 services:
   elasticsearch:
+    restart: always
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -14,6 +15,7 @@ services:
       - 9300:9300
 
   kibana:
+    restart: always
     image:
       "kibana:7.6.0"
     volumes:
@@ -22,6 +24,7 @@ services:
       - 5601:5601
 
   logstash:
+    restart: always
     image:
       "logstash:7.6.0"
     volumes:
