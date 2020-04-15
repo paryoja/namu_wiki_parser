@@ -5,6 +5,6 @@ COPY ./config/elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.ym
 COPY ./entry/es_entry.sh /usr/local/bin/es_entry.sh
 
 RUN bin/elasticsearch-plugin install analysis-nori
-RUN chmod u+x ./entry/es_entry.sh /usr/local/bin/es_entry.sh
+RUN chmod u+x /usr/local/bin/es_entry.sh
 
 ENTRYPOINT ["/usr/local/bin/es_entry.sh"]

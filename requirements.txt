@@ -6,6 +6,7 @@ requests==2.23.0
 emoji==0.5.4
 beautifulSoup4==4.9.0
 selenium==3.141.0
-tensorflow==1.15
-tensorflow_hub
+tensorflow==2.1.0
+tensorflow_hub==0.8.0
+tensorflow_text==2.1.1
 elasticsearch==7.6.0

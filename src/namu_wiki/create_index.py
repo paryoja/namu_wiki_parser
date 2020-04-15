@@ -56,9 +56,12 @@ body = {
             "properties": {
                 "title": {"type": "text", "analyzer": "nori_analyzer"},  # 제목
                 "text": {"type": "text", "analyzer": "nori_analyzer"},  # 글 내용
+                "embedded_title": {"type": "dense_vector", "dims": 512},
             }
         }
     },
 }
 
-res = es.indices.create(index="namu_wiki_analysis", body=body, include_type_name=True)
+res = es.indices.create(
+    index="namu_wiki_analysis", body=body, include_type_name=True, ignore=[400]
+)

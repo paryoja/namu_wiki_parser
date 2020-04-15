@@ -1,7 +1,10 @@
 import json
-from elasticsearch import Elasticsearch
 import pathlib
 import re
+
+import tensorflow_hub as hub
+import tensorflow_text  # noqa
+from elasticsearch import Elasticsearch
 
 file_template = re.compile(r"\[\[(파일|분류):(.+?)\]\]")
 youtube = re.compile(r"\[youtube\((.+?)\)\]", re.IGNORECASE)
@@ -98,8 +101,7 @@ def to_file(document_path, filepath):
                 parsed.write("\n")
 
 
-def to_es(filepath):
-    es = Elasticsearch(hosts=[{"host": "192.168.29.196", "port": 9200}])
+def to_es(filepath, es, embed):
     with open(str(filepath), encoding="utf-8") as f:
         for doc in f:
             data = json.loads(doc)
@@ -118,16 +120,26 @@ def to_es(filepath):
                     contents.append(cleaned_text)
 
             body = "\n".join(contents)
-            print(body)
-            document = {"title": data["title"], "text": body}
+            embedded_title = embed(data["title"])
+            # print(embedded_title)
+            print(data["title"])
+            document = {
+                "title": data["title"],
+                "text": body,
+                "embedded_title": embedded_title.numpy().tolist()[0],
+            }
             es.index(index="namu_wiki_analysis", body=document)
 
 
 def main():
+    es = Elasticsearch(hosts=[{"host": "192.168.29.196", "port": 9200}])
+    embed = hub.load(
+        "https://tfhub.dev/google/universal-sentence-encoder-multilingual/3"
+    )
     document_path = pathlib.Path("document/wiki")
 
     for filepath in document_path.glob("*.json"):
-        to_es(filepath)
+        to_es(filepath, es, embed)
         # to_file(document_path, filepath)
 
 

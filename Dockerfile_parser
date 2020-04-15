@@ -1,0 +1,6 @@
+FROM tensorflow/tensorflow:latest-py3
+MAINTAINER Yoonjae Park <yj0604.park@gmail.com>
+
+COPY requirements.txt .
+RUN python -m pip install --upgrade pip
+RUN python -m pip install -r requirements.txt
