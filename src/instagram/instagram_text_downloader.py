@@ -9,6 +9,7 @@ FLAGS = flags.FLAGS
 
 env = Env()
 env.read_env()
+from settings import INSTA_DOCUMENT_ROOT
 
 
 def main():
@@ -20,13 +21,21 @@ def main():
     turn = 0
     print(turn, len(response_dict["results"]))
 
-    with open("../instagram.txt", "w", encoding="utf-8") as w:
+    with open(INSTA_DOCUMENT_ROOT / "instagram.txt", "w", encoding="utf-8") as w:
         while True:
             for line in response_dict["results"]:
-                w.write(json.dumps(line["title"], ensure_ascii=False))
-                w.write("\n")
+                title = line["title"].strip().replace("\n", " ")
+                if (
+                    title
+                    and len(title) > 10
+                    and not title.startswith("#")
+                    and not title.startswith("Photo")
+                    and not title.startswith("Image may contain:")
+                ):
+                    w.write(json.dumps(line["title"]))
+                    w.write("\n")
             turn += 1
-            if response_dict["next"] != "None":
+            if response_dict["next"] is not None:
                 try:
                     response = requests.get(response_dict["next"], headers=headers)
                     response_dict = response.json()

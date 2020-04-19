@@ -15,9 +15,7 @@ def main():
     insta_id = re.compile(r"@[a-zA-Z0-9_.]+")
 
     compiled = re.compile("|".join([complete_hangul, partial_hangul, english, number]))
-    with open(
-        INSTA_DOCUMENT_ROOT / "/instagram_parsed.txt", "w", encoding="utf-8"
-    ) as w:
+    with open(INSTA_DOCUMENT_ROOT / "instagram_parsed.txt", "w", encoding="utf-8") as w:
         with open(INSTA_DOCUMENT_ROOT / "instagram.txt", encoding="utf-8") as f:
             for line in f:
                 line = json.loads(line.strip())
